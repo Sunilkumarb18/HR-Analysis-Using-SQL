@@ -1,5 +1,62 @@
+select * from [Human Resources]
 
 select 
        SUM(case when gender='Male' then 1 else 0 end) Males,
 	   SUM(case when gender='Female' then 1 else 0 end) Females
 from [Human Resources]
+
+select race,count(*)[Total Head Count]
+from [Human Resources]
+group by race
+
+
+update hr
+set hr.age =DATEDIFF(YEAR,cast(birthdate as date), cast( GETDATE() as date))
+from [Human Resources] hr
+
+select age,count(*)[Total Head Count]
+from [Human Resources]
+group by age
+
+select 
+       SUM(case when location='Headquarters' then 1 else 0 end) HeadQuaters,
+	   SUM(case when location='Remote' then 1 else 0 end) Remote
+from [Human Resources]
+
+select (DATEDIFF(DAY,cast(termdate as date),hire_date)) from [Human Resources] where termdate!=NULL
+
+update hr
+set hr.diff=DATEDIFF(YEAR,hire_date, cast(termdate as date))
+from [Human Resources] hr
+where termdate !=null
+
+
+select department,AVG(cast(diff as int)) from [Human Resources] where ISNUMERIC(diff)=1 
+group by department
+
+select department,
+       jobtitle,
+	   SUM(case when gender='Male' then 1 else 0 end) [Total Males],
+	   SUM(case when gender='Female' then 1 else 0 end)[Total Females]
+from [Human Resources]
+group by department,jobtitle
+
+select jobtitle,COUNT(*) [Total Count] from [Human Resources]
+group by jobtitle
+
+
+select department,
+       SUM(case when cast(termdate as date)<=cast(GETDATE() as date) then 1 else 0 end)/count(*) 
+from [Human Resources]
+group by department
+
+select location_state,
+       location_city,
+	   COUNT(*) [Total Count]
+from [Human Resources]
+group by location_state,location_city
+
+
+
+
+
